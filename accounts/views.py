@@ -6,28 +6,36 @@ from django.contrib.auth import authenticate, login, logout
 def user_login(request):
     if not request.user.is_authenticated:
         if request.method == 'POST':
-            print(44444444444, request.POST['phonenumber'], request.POST['password'])
             user = authenticate(phonenumber = request.POST['phonenumber'], password =  request.POST['password'])
-            print(3333333, user)
             if user:
                 login(request, user)
                 return redirect('register')
             else:
                 return render(request, 'auth/login.html', context={"error": "Something is wrong"})
         return render(request, 'auth/login.html')
-    
-
-
-def user_register(request):
+    else:
+        if request.user.is_supperuser:
+            pass
+        elif request.user.is_staff:
+            pass
+        else:
+            pass
         
+        
+def user_register(request):        
     if not request.user.is_authenticated:
         if request.method == "POST":
             form = UserForm(request.POST)
             if form.is_valid():
-                print(1111111111, form.data)
-                user = form.save()
-                print(2222222222222222, user)
+                user = form.save(commit=False)
+                user.set_password(form.data['password'])
+                user.save()
                 return redirect('login')
-            return render(request, 'auth/register/html', context=form.errors)
+            return render(request, 'auth/register.html', context={"error": form.errors})
         else:
             return render(request, 'auth/register.html')
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
