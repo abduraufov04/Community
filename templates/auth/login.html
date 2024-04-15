@@ -9,6 +9,17 @@
 </head>
 
 <body>
+    {% if error %}
+    <div class="toast-container float-end mx-3 my-2 bg-danger">
+        <div class="toast align-items-center show" role=" alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex ">
+                <div class="toast-body">
+                    {{error}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}"
     <main class="form-signin">
         <form method="POST" class="w-25 position-absolute top-50 start-50 translate-middle text-center"> {% csrf_token %}            
             <h1 class="h3 mb-3 fw-normal">Kirish</h1>

@@ -1,3 +1,11 @@
 from django.shortcuts import render
 
-# Create your views here.
+from django.views.generic import ListView
+
+from admins.models import Admins
+
+class AdminsListView(ListView):
+    model = Admins
+    template_name = 'list.html'
+    
+

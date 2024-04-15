@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+Adminslar ro'yxati
+{% endblock title %}
+
+
+{% block content %}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">FISH</th>
+            <th scope="col">Turi</th>
+            <th scope="col">Boshqaruv</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for admin in object_list %}
+        <tr>
+            <th scope="row"> {{forloop.counter}} </th>
+            <td>{{admin.user.fullname}}</td>
+            <td>admin</td>
+            <td>
+                <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-pencil"></i>
+                <i class="fa-solid fa-trash"></i>
+            </td>
+        </tr>      
+        {% endfor %}
+        <!-- <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td colspan="2">Larry the Bird</td>
+            <td>@twitter</td>
+        </tr> -->
+    </tbody>
+</table>
+{% endblock content %}
