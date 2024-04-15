@@ -8,4 +8,7 @@ class BlogForm(forms.ModelForm):
         fields = ['img', 'title', 'type', 'body']
         widgets = {'body': SummernoteWidget()}
         
+    def create(self, validated_data):
+        print(1111111, validated_data)
         
+        return super().create(validated_data)

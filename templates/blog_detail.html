@@ -78,11 +78,11 @@
                         <h4 class="d-inline">{{blog.title}}</h4>
                     </div>
                     {% if user.is_authenticated %}
-                        <div class="float-end">
-                            <a class="text-decoration-none text-muted" href="#">
-                                {{blog.author}}
-                            </a>
-                        </div>
+                    <div class="float-end">
+                        <a class="text-decoration-none text-muted" href="#">
+                            {{blog.author}}
+                        </a>
+                    </div>
                     {% endif %}
                 </div>
             </nav>
@@ -90,15 +90,32 @@
 
         <section id="content-wrapper">
             <div class="row">
-                <div class="col-lg-12">
+                {% if blog.img %}
+                <div class="col-lg-12 text-center mb-3">
+                    <img width="80%"
+                        src="{{ blog.img.url }}"
+                        alt="{{blog.title}}">
+                </div>
+                <hr>
+                {% endif %}
+                <div class="col-lg-12 mt-3">
+                    <h6>Turi: {{blog.type}} </h6>
                     {{blog.body|safe}}
                 </div>
             </div>
             <div class="card-footer">
+                {% if blog.author == user or user.is_superuser or user.is_staff %}
+                  
+                <a class="mx-2 text-decoration-none text-muted" href="{% url 'update_blog' blog.id %}"><i
+                    style="color:blue" class="fa-solid fa-pencil fs-4"></i></a>
+                <a class="mx-2 text-decoration-none text-muted" href="{% url 'delete_blog' blog.id %}"><i
+                    style="color:crimson" class="fa-solid fa-trash fs-4"></i></a>
+                    
+                {% endif %}
                 <h5 class="text-end">
                     {{blog.created_at}}
                 </h5>
-                
+
             </div>
         </section>
 

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% block title %}
+Delete confirm
+{% endblock title %}
+
+
+{% block content %}
+<div class="container text-center">
+    <h2 class="my-4"> <strong>{{ object }}</strong> ni rostanham o'chirishni xoxlasizmi?</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="submit" class="btn btn-danger" value="Haa. Albatta"">
+            <a href="{% url 'detail_blog' object.id %}" class="btn btn-secondary">Bekor qilish</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}
