@@ -6,39 +6,57 @@ Adminslar ro'yxati
 
 
 {% block content %}
-<table class="table">
+<table class="table text-center container">
     <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">FISH</th>
             <th scope="col">Turi</th>
-            <th scope="col">Boshqaruv</th>
+            <th scope="col">Boshqaruv <input type="submit" value="Saqlash" class="btn btn-success float-end"></th>
         </tr>
     </thead>
     <tbody>
-        {% for admin in object_list %}
-        <tr>
-            <th scope="row"> {{forloop.counter}} </th>
-            <td>{{admin.user.fullname}}</td>
-            <td>admin</td>
-            <td>
-                <i class="fa-solid fa-user"></i>
-                <i class="fa-solid fa-pencil"></i>
-                <i class="fa-solid fa-trash"></i>
-            </td>
-        </tr>      
-        {% endfor %}
-        <!-- <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-        </tr> -->
+        {% if 'user_list' in request.path %}
+            <h1 class="mx-5 my-3">Foydalanuvchilar</h1>
+        {% elif 'admin_list' in request.path %}
+            <h1 class="mx-5 my-3"> Adminlar</h1>
+        {% endif %}
+        <form 
+            {% if 'user_list' in request.path %}
+                action="{% url 'edit_user_to_admin' %}" 
+            {% elif 'admin_list' in request.path %}
+                action="{% url 'edit_admin_to_user' %}" 
+            {% endif %}
+            class="text-center"
+            method="post">
+            {% csrf_token %}
+            
+            {% for admin in object_list %}
+            <tr>
+                <th scope="row"> {{forloop.counter}} </th>
+                <td>{{admin.user.fullname}}</td>
+                <td>
+                    <select name="{{admin.id}}" class="form-select">
+                        <option value="user" {% if 'user_list' in request.path  %} selected {% endif %}>
+                            User
+                        </option>
+                        <option {% if 'admin_list' in request.path  %} selected {% endif %} value="admin">Admin</option>
+                    </select>
+                </td>
+                <td>
+                    <a href="#" class="text-muted">
+                        <i class="fa-solid fa-user mx-3 fs-4" style="color: blue;"></i>
+                    </a>                    
+                    <a href="#" class="text-muted">
+                        <i class="fa-solid fa-trash mx-3 fs-4" style="color: crimson;"></i>
+                    </a>
+                </td>
+            </tr>      
+            {% endfor %}
+
+        </form>  
+        
+        
     </tbody>
 </table>
 {% endblock content %}

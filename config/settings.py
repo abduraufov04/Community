@@ -44,6 +44,11 @@ INSTALLED_APPS = [
     'superadmin',
     'admins',
     'user',
+    
+    'blog',
+    
+    # Another apps
+    'django_summernote',
 
 ]
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -134,6 +139,21 @@ MEDIA_URL = 'media/'
 
 MEDIA_ROOT = BASE_DIR / "media"
 
+SUMMERNOTE_CONFIG = {
+    'iframe': False,
+    'summernote': {
+        'toolbar': [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview']],
+        ],
+        'width': '100%',
+        'height': '400',
+        'disable_upload': True,  # Disable image upload
+    },
+}
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

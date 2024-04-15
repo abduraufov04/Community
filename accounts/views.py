@@ -4,6 +4,8 @@ from .forms import UserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from user.models import User
+from admins.models import Admins
+from accounts.models import CustomUser
 
 def user_login(request):
     if not request.user.is_authenticated:
@@ -48,3 +50,35 @@ def user_logout(request):
 @login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
+
+
+@login_required
+def edit_user_to_admin(request):
+    if request.user.is_superuser:
+        data = dict(request.POST)
+        data.pop('csrfmiddlewaretoken')
+        for id, u_ty in data.items():
+            if u_ty[0] == 'admin':
+                user = User.objects.get(id = id)
+                base_user = CustomUser.objects.get(id = user.user.id)
+                Admins.objects.create(user = base_user).save()
+                user.delete()
+                print(22222)
+        return redirect('user_list')   
+    else:
+        return render(request, 'dashboard.html')
+
+
+def edit_admin_to_user(request):
+    if request.user.is_superuser:
+        data = dict(request.POST)
+        data.pop('csrfmiddlewaretoken')
+        for id, u_ty in data.items():
+            if u_ty[0] == 'user':
+                user = Admins.objects.get(id = id)
+                base_user = CustomUser.objects.get(id = user.user.id)
+                User.objects.create(user = base_user).save()
+                user.delete()
+        return redirect('admin_list')   
+    else:
+        return render(request, 'dashboard.html')

@@ -1,3 +1,4 @@
+{% load static %}
 <html lang="en">
 
 <head>
@@ -19,7 +20,10 @@
     <link rel="manifest" href="/docs/5.0/assets/img/favicons/manifest.json">
     <link rel="mask-icon" href="/docs/5.0/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
     <meta name="theme-color" content="#7952b3">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'summernote/dist/summernote.css' %}">
+    {% block link %}{% endblock link %}
 
     <style>
         .bd-placeholder-img {
@@ -43,38 +47,65 @@
 <body>
 
     <main>
-        <div class="container py-4">
-            <header class="pb-3 mb-4 border-bottom">
+        <div class="">
+            <div class="nav px-5 w-100">
+                
+                <div class="nav-header">
+                    <h1 class="nav-title">
+                        <a class="text-muted" href="{% url 'dashboard' %}">Community</a>
+                    </h1>
+                </div>
+                <div class="nav-btn">
+                    <label for="nav-check">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </label>
+                </div>
+
+                <div class="nav-links w-75">
+                    {% if user.is_superuser %}
+                    <a class="text-muted mx-2" href="{% url 'admin_list' %}"> Adminlar </a>
+                    <a class="text-muted mx-2" href="{% url 'user_list' %}"> Foydalanuvchilar </a>
+                    <a class="text-muted mx-2" href="{% url 'blog' %}"> Blog </a>
+                    {% endif %}
+
+                    <div class="logout">
+                        <a class="text-muted text-decoration-none mx-2" href="">{{user}}</a>|
+                        <a class="text-muted text-decoration-none mx-2" href="{% url 'logout' %}">Chiqish</a>
+                    </div>
+                </div>
+            </div>
+            <!-- <header class="pb-3 mb-4 border-bottom">
                 <a href="{% url 'dashboard' %}" class="d-inline-block text-dark text-decoration-none">
                     <span class="fs-4">Community</span>
                 </a>
-                
-                {% if user.is_superuser %}      
-                    <a class="text-muted mx-2" href="{% url 'admin_list' %}"> Adminlar </a>
-                    <a class="text-muted mx-2" href="{% url 'user_list' %}"> Foydalanuvchilar </a>
-                    <a class="text-muted mx-2" href="#"> Blog </a>
+
+                {% if user.is_superuser %}
+                <a class="text-muted mx-2" href="{% url 'admin_list' %}"> Adminlar </a>
+                <a class="text-muted mx-2" href="{% url 'user_list' %}"> Foydalanuvchilar </a>
+                <a class="text-muted mx-2" href="{% url 'blog' %}"> Blog </a>
                 {% endif %}
-                
+
                 <div class="float-end">
                     <a class="text-muted text-decoration-none mx-2" href="">{{user}}</a>|
                     <a class="text-muted text-decoration-none mx-2" href="{% url 'logout' %}">Chiqish</a>
                 </div>
-            </header>
+            </header> -->
 
-            {% block content %}
-              
-            {% endblock content %}
+            <div style="min-height: 70vh;">
+                {% block content %}
 
-            <footer class="pt-3 mt-4 text-muted border-top text-center">
-                © 2024 powered by Mr Komilov
-            </footer>
+                {% endblock content %}
+
+            </div>
         </div>
     </main>
-
-
-
-
-
+    
+    <footer class="pt-3 mt-4 text-muted text-center pb-3 w-100">
+        © 2024 powered by Mr Komilov
+    </footer>
+    <script src="{% static 'summernote/dist/summernote.js' %}"></script>
 </body>
 
 </html>

@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Blog {% endblock title %}
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+{% endblock link %}
+
+{% block content %}
+<main class="container">
+    <div id="wrapper">
+        <aside id="sidebar-wrapper">
+            <div class="sidebar-brand">
+                <form action="#" method="post">
+                    <select class="form-select" name="type_of_blog" id="">
+                        <option value="blog">Blog</option>
+                        <option value="news">Yangiliklar</option>
+                        <option value="info">Malumotlar</option>
+                    </select>
+                </form>
+            </div>
+            <ul class="sidebar-nav">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p class="card-text">Some quick example text to build on .</p>
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p class="card-text">Some quick example text to build on the card title </p>
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p class="card-text">Some quick example text to build on the card title </p>
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p class="card-text">Some quick example text to build on the card title </p>
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p class="card-text">Some quick example text to build on the card title </p>
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                    </div>
+                </div>
+            </ul>
+        </aside>
+
+        <div id="navbar-wrapper">
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a href="#" class="navbar-brand" id="sidebar-toggle">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                        <h4 class="d-inline">{{blog.title}}</h4>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <div class="float-end">
+                            <a class="text-decoration-none text-muted" href="#">
+                                {{blog.author}}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+
+        <section id="content-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    {{blog.body|safe}}
+                </div>
+            </div>
+            <div class="card-footer">
+                <h5 class="text-end">
+                    {{blog.created_at}}
+                </h5>
+                
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<script src="{% static 'js/blog.js' %}"></script>
+
+{% endblock content %}
