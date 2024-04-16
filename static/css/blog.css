@@ -3,6 +3,13 @@ body {
     position: relative;
     min-height: 100%;
   }
+  #comment{
+    padding: 5px 10px;
+    border: dotted #000 3px;
+    outline: none;
+    margin-top: 5px;
+    border-bottom: solid #000 4px;
+  }
   
   a {
     transition: background 0.2s, color 0.2s;
@@ -242,3 +249,5 @@ body {
       margin-right: 250px;
     }
   }
+
+

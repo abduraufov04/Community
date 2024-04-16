@@ -1,15 +1,22 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from blog.forms import BlogForm
 
-from .models import Blog
+from .models import Blog, Comment
 
 class BlogListView(ListView):
-    model = Blog
     context_object_name = 'blogs'
     template_name='blog.html'
     
+    def get_queryset(self):
+        queryset = Blog.objects.all()
+
+        query = self.request.GET.get('query', '')
+        print(98327492837492374293742938, query)
+        if query:
+            queryset = queryset.filter(type=query)  
+        return queryset
     
 class BlogCreateView(CreateView):
     model = Blog
@@ -22,7 +29,7 @@ class BlogCreateView(CreateView):
         return super().form_valid(form)
     
     def get_success_url(self):
-        return reverse_lazy('blog_detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy('detail_blog', kwargs={'pk': self.object.pk})
     
     
 class BlogDetailDetailView(DetailView):
@@ -38,10 +45,29 @@ class BlogUpdateView(UpdateView):
     success_url = reverse_lazy('blog')
     
     def get_success_url(self):
-        return reverse_lazy('blog_detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy('detail_blog', kwargs={'pk': self.object.pk})
     
     
 class BlogDeleteView(DeleteView):
     model = Blog
     template_name='delete_confirm.html'
     success_url = reverse_lazy('blog')
+
+
+def create_comment(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    try:
+        blog = Blog.objects.get(id = pk)
+        comment = request.POST['comment']
+        if len(comment ) == 0:
+            raise 0/0
+        Comment.objects.create(
+            blog = blog,
+            body = comment,
+            author = request.user
+        ).save()
+        return redirect('detail_blog', pk)
+    except:
+        return redirect('blog')

@@ -10,7 +10,9 @@ from accounts.models import CustomUser
 def user_login(request):
     if not request.user.is_authenticated:
         if request.method == 'POST':
-            user = authenticate(phonenumber = request.POST['phonenumber'], password =  request.POST['password'])
+            phonenumber = request.POST['phonenumber']
+            password = request.POST['password']
+            user = authenticate(phonenumber = phonenumber, password = password)
             if user:
                 login(request, user)
                 return redirect('register')
@@ -82,3 +84,20 @@ def edit_admin_to_user(request):
         return redirect('admin_list')   
     else:
         return render(request, 'dashboard.html')
+    
+
+def profile(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    user = request.user
+    
+    if len(User.objects.filter(user=user)) > 0:
+        return redirect('user_profile')
+    
+    elif len(Admins.objects.filter(user=user)) > 0:
+        return redirect('admins_profile')
+    
+    else:
+        return redirect('superadmin_profile')
+    
+    return redirect('login')

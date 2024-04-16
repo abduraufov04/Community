@@ -67,32 +67,16 @@
                     {% if user.is_superuser %}
                     <a class="text-muted mx-2" href="{% url 'admin_list' %}"> Adminlar </a>
                     <a class="text-muted mx-2" href="{% url 'user_list' %}"> Foydalanuvchilar </a>
-                    <a class="text-muted mx-2" href="{% url 'blog' %}"> Blog </a>
                     {% endif %}
+                    <a class="text-muted mx-2" href="{% url 'blog' %}"> Blog </a>
+                    <a class="text-muted mx-2" href="{% url 'chat' %}"> Chat </a>
 
                     <div class="logout">
-                        <a class="text-muted text-decoration-none mx-2" href="">{{user}}</a>|
+                        <a class="text-muted text-decoration-none mx-2" href="{% url 'profile' %}">{{user}}</a>|
                         <a class="text-muted text-decoration-none mx-2" href="{% url 'logout' %}">Chiqish</a>
                     </div>
                 </div>
             </div>
-            <!-- <header class="pb-3 mb-4 border-bottom">
-                <a href="{% url 'dashboard' %}" class="d-inline-block text-dark text-decoration-none">
-                    <span class="fs-4">Community</span>
-                </a>
-
-                {% if user.is_superuser %}
-                <a class="text-muted mx-2" href="{% url 'admin_list' %}"> Adminlar </a>
-                <a class="text-muted mx-2" href="{% url 'user_list' %}"> Foydalanuvchilar </a>
-                <a class="text-muted mx-2" href="{% url 'blog' %}"> Blog </a>
-                {% endif %}
-
-                <div class="float-end">
-                    <a class="text-muted text-decoration-none mx-2" href="">{{user}}</a>|
-                    <a class="text-muted text-decoration-none mx-2" href="{% url 'logout' %}">Chiqish</a>
-                </div>
-            </header> -->
-
             <div style="min-height: 70vh;">
                 {% block content %}
 
@@ -106,6 +90,7 @@
         © 2024 powered by Mr Komilov
     </footer>
     <script src="{% static 'summernote/dist/summernote.js' %}"></script>
+    <script src="{% static 'js/blog.js' %}"></script>
 </body>
 
 </html>

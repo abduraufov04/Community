@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
+from blog.models import Blog
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, phonenumber, password, fullname, **extra_fields):
         if not phonenumber:
@@ -32,3 +34,7 @@ class CustomUser(AbstractUser):
 
     def __str__(self) -> str:
         return f"{self.fullname}"
+
+    
+    def get_all_my_blogs(self):
+        return Blog.objects.filter(author = self)

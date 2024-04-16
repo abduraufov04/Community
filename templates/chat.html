@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+{% load static %}
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+<link rel="stylesheet" href="{% static 'css/chat.css' %}">
+{% endblock link %}
+
+{% block content %}
+<div class="container">
+    <div id="wrapper">
+
+        <aside id="sidebar-wrapper">
+            <div class="sidebar-brand">
+                <h2>Chatlar</h2>
+            </div>
+            <ul id="chat_list" class="sidebar-nav">
+            </ul>
+
+        </aside>
+
+        <div id="navbar-wrapper">
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a href="#" class="navbar-brand" id="sidebar-toggle"><i class="fa fa-bars"></i></a>
+                        <h5 class="d-inline">
+                            {% if partner %}
+                            {{partner}}
+                            {% endif %}
+                        </h5>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <section id="content-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="chats" class="chat-oyna" style="height : 70vh; overflow-y: scroll; background-color: aqua;">
+                        {% for message in chats %}
+                        <div class="outside-box">
+                            <div class="message-box my-3 
+                                {% if message.from_user == request.user %}
+                                  me
+                                {% endif %}
+                                ">
+                                <div class="mtitle">{{message.from_user}}</div>
+                                <p>{{message.message}}</p>
+                                <i class="mtime">{{message.created_at}}</i>
+
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="input-box">
+
+                        <form id="myForm"> {% csrf_token %}
+                            <input type="text" name="partner" value="{{partner.id}}" style="display: none;">
+                            <input class="input" type="text" name="message" id="textinput">
+                            <input class="send" type="submit" id="my-button" value="Yuborish">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        // Function to make AJAX request
+        function getIDFromURL() {
+        const url = window.location.pathname;
+        const parts = url.split('/');
+        const id = parts[parts.length - 2];
+        return id;
+    }
+        function getMessageAjaxRequest() {
+            const id = getIDFromURL();
+            $.ajax({
+                type: 'GET',
+                url: `/chat/get_history_js/${id}/`,
+                success: function (response) {
+                    
+                    const messageData = response.message_list;
+                    console.log(22223333, messageData);
+
+                    function updateMessageList(data) {
+                        const messageContainer = document.getElementById('chats');
+                        messageContainer.innerHTML = '';
+
+                        
+                        if (Object.keys(data).length === 0) {
+                            console.log('Data is empty.');
+                            return;
+                        }
+
+                        data.forEach(function (message) {
+                            const messageBox = document.createElement('div');
+                            messageBox.classList.add('outside-box');
+                            let dynamicKey = 0;
+                            dynamicKey = Object.keys(message)[0];
+                            message = message[dynamicKey];
+                            console.log(99999999, message);
+                            const innerMessageBox = document.createElement('div');
+                            innerMessageBox.classList.add('message-box', 'my-3');
+                            if (message.from_user === '{{ request.user }}') {
+                                innerMessageBox.classList.add('me');
+                            }
+
+                            const messageTitle = document.createElement('div');
+                            messageTitle.classList.add('mtitle');
+                            messageTitle.textContent = message.from_user;
+
+                            const messageContent = document.createElement('p');
+                            messageContent.textContent = message.message;
+
+                            const messageTime = document.createElement('i');
+                            messageTime.classList.add('mtime');
+                            messageTime.textContent = message.created_at;
+
+                            innerMessageBox.appendChild(messageTitle);
+                            innerMessageBox.appendChild(messageContent);
+                            innerMessageBox.appendChild(messageTime);
+
+                            messageBox.appendChild(innerMessageBox);
+                            messageContainer.appendChild(messageBox);
+                        });
+                    }
+
+                    // Update the message list initially
+                    updateMessageList(messageData);
+
+                    $('#result').html(response.message);
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        setInterval(function () {
+            getMessageAjaxRequest();
+        }, 5000);
+    });
+
+
+    $(document).ready(function () {
+        // Function to make AJAX request
+        function getChatAjaxRequest() {
+            // let id = document.getElementById('curren_id');
+            $.ajax({
+                type: 'GET',
+                url: `/chat/get_chat_list/`,
+                success: function (response) {
+                    console.log(response);
+                    const chatData = response.chat_list;
+                    console.log(19284781274918247198274, chatData);
+
+                    function updateChatList(data) {
+                        const chatList = document.getElementById('chat_list');
+                        chatList.innerHTML = '';
+
+                        // Check if data is empty
+                        if (Object.keys(data).length === 0) {
+                            console.log('Data is empty.');
+                            return;
+                        }
+
+                        for (const chatId in data) {
+
+                            const chatInfo = data[chatId];
+                            let dynamicKey = 0;
+                            dynamicKey = Object.keys(chatInfo)[0];
+
+
+                            const fullName = chatInfo[dynamicKey].fullname;
+                            const phoneNumber = chatInfo[dynamicKey].phonenumber;
+
+
+                            const chatItem = document.createElement('li');
+                            chatItem.classList.add('inactive'); // Add inactive class initially
+
+                            const chatLink = document.createElement('a');
+                            chatLink.textContent = fullName;
+                            chatLink.href = `/chat/get_history/${dynamicKey}`;
+
+
+                            chatItem.appendChild(chatLink);
+                            chatList.appendChild(chatItem);
+                        }
+
+
+
+                    }
+                    // Update the chat list initially
+                    updateChatList(chatData);
+
+                    $('#result').html(response.message);
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+
+        setInterval(function () {
+            getChatAjaxRequest();
+        }, 10000);
+    });
+
+
+    $(document).ready(function () {
+
+        $('#myForm').submit(function (event) {
+            event.preventDefault();
+
+
+            var formData = $(this).serialize();
+
+            console.log(23131231, formData);
+            // AJAX request
+            $.ajax({
+                url: '/chat/send/',
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        });
+
+        // Or, for button click (if button is used):
+        
+    });
+</script>
+
+
+<!-- Include jQuery -->
+
+
+
+{% endblock content %}

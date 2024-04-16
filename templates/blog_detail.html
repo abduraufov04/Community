@@ -11,60 +11,20 @@
     <div id="wrapper">
         <aside id="sidebar-wrapper">
             <div class="sidebar-brand">
-                <form action="#" method="post">
-                    <select class="form-select" name="type_of_blog" id="">
-                        <option value="blog">Blog</option>
-                        <option value="news">Yangiliklar</option>
-                        <option value="info">Malumotlar</option>
-                    </select>
-                </form>
+                <h3>Mening postlarim</h3>
             </div>
             <ul class="sidebar-nav">
-                <div class="card" style="width: 100%;">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on .</p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
+                {% for bl in user.get_all_my_blogs %}
+                  
+                    <div class="card" style="width: 100%;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{bl.title}}</h5>
+                            <p class="card-text">{{bl.created_at}}</p>
+                            <a href="{% url 'detail_blog' bl.id %}" class="card-link">Batafsil</a>
+                            
+                        </div>
                     </div>
-                </div>
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title </p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                </div>
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title </p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                </div>
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title </p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                </div>
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title </p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                </div>
+                {% endfor %}
             </ul>
         </aside>
 
@@ -116,6 +76,31 @@
                     {{blog.created_at}}
                 </h5>
 
+            </div>
+            <form class="mt-3" method = "post" action="{% url 'create_comment' blog.id %}">
+                {% csrf_token %}
+                <textarea id="comment" style="width: 100%;" type="text" name="comment" placeholder="Comment ..."></textarea>
+                <button type="submit" class="btn btn-success my-3 float-end" style="width: 20%;">Send</button>
+            
+            </form>
+
+            
+            <div>
+                <h1>Sharxlar</h1>
+                {% for comment in blog.get_all_comment %}
+                  
+                <div class="card my-3">
+                    <div>
+                        <h4 class="m-3">{{comment.author}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="mx-4">{{comment.body}}</p>
+                    </div>
+                    <div class="card-footer">
+                        {{comment.created_at}}
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </section>
 

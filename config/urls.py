@@ -11,6 +11,7 @@ urlpatterns = [
     path('superuser/', include('superadmin.urls')),
     path('user/', include('user.urls')),
     path('blog/', include('blog.urls')),
+    path('chat/', include('chat.urls')),
     path('', include('accounts.urls')),
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
