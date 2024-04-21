@@ -29,6 +29,7 @@
                             {% endif %}
                         </h5>
                     </div>
+                    <a href="{% url 'connect_new_user' %}">Yangi kontakt qo'shish</a>
                 </div>
             </nav>
         </div>
@@ -36,7 +37,7 @@
         <section id="content-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <div id="chats" class="chat-oyna" style="height : 70vh; overflow-y: scroll; background-color: aqua;">
+                    <div id="chats" class="chat-oyna" style="height : 70vh; overflow-y: scroll; ">
                         {% for message in chats %}
                         <div class="outside-box">
                             <div class="message-box my-3 
@@ -52,13 +53,19 @@
                         </div>
                         {% endfor %}
                     </div>
-
+                        <script>
+                            function clear(){
+                                const i = document.getElementById('textinput');
+                                i.value = "";
+                            }
+                        </script>
                     <div class="input-box">
-
                         <form id="myForm"> {% csrf_token %}
                             <input type="text" name="partner" value="{{partner.id}}" style="display: none;">
                             <input class="input" type="text" name="message" id="textinput">
-                            <input class="send" type="submit" id="my-button" value="Yuborish">
+                            <input class="send" onclick="clear();" type="submit" id="my-button" value="Yuborish">
+
+
                         </form>
                     </div>
                 </div>
@@ -213,7 +220,7 @@
 
         setInterval(function () {
             getChatAjaxRequest();
-        }, 10000);
+        }, 1000);
     });
 
 
@@ -221,27 +228,20 @@
 
         $('#myForm').submit(function (event) {
             event.preventDefault();
-
-
             var formData = $(this).serialize();
-
-            console.log(23131231, formData);
             // AJAX request
             $.ajax({
                 url: '/chat/send/',
                 type: 'POST',
                 data: formData,
                 success: function (response) {
-                    console.log(response);
+                    
                 },
                 error: function (error) {
                     console.error(error);
                 }
             });
         });
-
-        // Or, for button click (if button is used):
-        
     });
 </script>
 

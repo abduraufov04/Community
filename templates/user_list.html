@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Foydalanuvchilar</h1>
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">FISH</th>
+            <th scope="col">Telefon raqam</th>
+            <th scope="col">Boshqaruv</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+          
+        <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{user.fullname}}</td>
+            <td>{{user.phonenumber}}</td>
+            <td><a class="btn btn-info" href="{% url 'connect_contact' user.id %}">Yozishni boshlash</a></td>
+        </tr>
+        {% endfor %}
+        
+    </tbody>
+</table>
+{% endblock content %}

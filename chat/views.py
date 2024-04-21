@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 
 from .models import Chat
@@ -8,9 +8,15 @@ from accounts.models import CustomUser
 def chat(request):
     return render(request, 'chat.html')
 
-
-# from django.shortcuts import render, JsonResponse
-
+def connect_contact(request, pk):
+    user = CustomUser.objects.get(pk = pk)
+    Chat.objects.create(
+        from_user = request.user,
+        to_user = user,
+        message = f"{request.user} - sizni kontaktga qo`shdi"
+    ).save()
+    return redirect('chat')
+    
 def your_view(request):
     if request.method == 'POST':
         
@@ -76,3 +82,5 @@ def get_chat_list(request):
         return JsonResponse({'message': "200", "chat_list": res})
         
         
+def connect_new_user(request):
+    return render(request, 'user_list.html', context={"users": CustomUser.objects.all()})
