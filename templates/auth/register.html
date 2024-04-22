@@ -26,9 +26,9 @@
             style="width: 300px;"
             class=" position-absolute top-50 start-50 translate-middle text-center"> {% csrf_token %}
 
-
-            <h1 class="h3 mb-3 fw-normal">Ro'yxatdan o'tish</h1>
-
+            <a href="{% url 'dashboard' %}" class="text-decoration-none text-muted">
+                <h1 class="h3 mb-3 fw-normal">Ro'yxatdan o'tish</h1>
+            </a>
             <div class="form-floating my-2">
                 <input name='phonenumber' type="number" class="form-control" id="phonenumber"
                     placeholder="+998 00 111 22 33">

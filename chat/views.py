@@ -39,23 +39,28 @@ def your_view(request):
 
 def get_history(request, pk):
     data = Chat.objects.filter(from_user = request.user, to_user__id = pk) | Chat.objects.filter(from_user__id = pk, to_user = request.user)
+    data = data.order_by("created_at")
     partner = CustomUser.objects.get(pk = pk)
     return render(request, 'chat.html', context={"chats": data, "partner":partner}, )
 
 def get_history_js(request, pk):
     data = Chat.objects.filter(from_user = request.user, to_user__id = pk) | Chat.objects.filter(from_user__id = pk, to_user = request.user)
-    partner = CustomUser.objects.get(pk = pk)
+    data = data.order_by("created_at")
+    # partner = CustomUser.objects.get(pk = pk)
+    print(1111111111111111111, request.user)
     res = []
     for d in data:
         res.append({
-            d.id : {
-                "from_user" : d.from_user.fullname,
-                "to_user" : d.to_user.fullname,
-                "message" : d.message,
-                "created_at" : d.created_at
-            }}
+                "_id" : f"{d.id}",
+                "text" : d.message,
+                "userId" : f"{d.from_user.id}",
+                "date" : d.created_at,
+                "read" : True,
+                "readDate" : d.created_at,
+            }
         )
-    return JsonResponse({"status":200, "message_list": res})
+    
+    return JsonResponse({"status":200, "messages": res})
 
 def get_chat_list(request):
     if request.method =='GET':

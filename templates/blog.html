@@ -8,30 +8,65 @@
 
 {% block content %}
 <main>
+    <div
+    style="background-image: url('https://scontent.fbhk1-3.fna.fbcdn.net/v/t39.30808-6/398713072_1743086262845684_420082929064143227_n.jpg?stp=dst-jpg_p640x640&_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_ohc=gCOymGVHDIgAb5qab8M&_nc_ht=scontent.fbhk1-3.fna&oh=00_AfC-jP1TSWqwrnKJ7oMOqDGQafecopgJj6_VO2ShSv5lYg&oe=662AB8B5');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 95vh;
+    background-position: center;
+    "
+    >
+    <div 
+    style="
+        background-color: rgba(0, 0, 0, 0.7);
+        height: 95vh;
+        color: #fff;
+    ">
 
+    
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <a href="{% url 'blog' %}" class="text-mued text-decoration-none">
-                    <h1 class="fw-light">Namangan <br>muhandislik-qurilish <br> instituti</h1>
+                
+                <a href="{% url 'blog' %}" class="text-decoration-none">
+                    <h1 class="fw-light"><span class="float-start">Namangan</span> <br>muhandislik-qurilish <br> <span class="float-end">instituti</span></h1>
                 </a>
-                <p class="lead text-muted">Barcha yangiliklarni shu yerda ishonchli va hammadan oldin ko'rishingiz mumkun bo'ladi </p>
-                <p class="btn-group">
-                    <a href="{% url 'blog' %}?{{ query|urlencode }}query=news" class="btn btn-outline-primary my-2">Yangiliklar</a>
-                    <a href="{% url 'blog' %}?{{ query|urlencode }}query=info" class="btn btn-outline-info my-2">Malumotlar</a>
-                    <a href="{% url 'blog' %}?{{ query|urlencode }}query=blog" class="btn btn-outline-secondary my-2">Bloglar</a>
-                </p>
-                <p>
-                    <a class="btn btn-info" href="{% url 'create_blog' %}">Post yaratish</a>
+                <p class="lead  mt-5">Barcha yangiliklarni shu yerda ishonchli va hammadan oldin ko'rishingiz mumkun bo'ladi </p>
+                <p class="btn-group mt-3">
+                    {% if 'news' in request.get_full_path %}
+                        <a href="{% url 'blog' %}?{{ query|urlencode }}query=news#blog-content" class="btn btn-primary my-2">Yangiliklar</a>
+                    {% else %}
+                        <a href="{% url 'blog' %}?{{ query|urlencode }}query=news#blog-content" class="btn btn-outline-primary my-2">Yangiliklar</a>
+                    {% endif %}
+                    
+                    {% if 'info' in request.get_full_path %}
+                        <a href="{% url 'blog' %}?{{ query|urlencode }}query=info#blog-content" class="btn btn-info my-2">Malumotlar</a>
+                    {% else %}
+                        <a href="{% url 'blog' %}?{{ query|urlencode }}query=info#blog-content" class="btn btn-outline-info my-2">Malumotlar</a>
+                    {% endif %}
+                    
+                    {% if '=blog' in request.get_full_path %}
+                        <a href="{% url 'blog' %}?{{ query|urlencode }}query=blog#blog-content" class="btn btn-secondary my-2">Bloglar</a>
+                    {% else %}
+                        <a href="{% url 'blog' %}?{{ query|urlencode }}query=blog#blog-content" class="btn btn-outline-secondary my-2">Bloglar</a>
+                    
+                    {% endif %}
+                    
                 </p>
             </div>
         </div>
     </section>
-
-    <div class="album py-5 bg-light">
+</div>
+    </div>
+    <div class="album py-5 bg-light" style="min-height:80vh" id="blog-content">
         <div class="container">
 
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% if blogs|length == 0 %}
+                <div class="text-center w-100">
+                    <h4>Hozircha blog mavjud emas :)</h4>
+                </div>    
+                {% endif %}
                 {% for blog in blogs %}
                 <!-- Start Blog item -->
                 <div class="col">

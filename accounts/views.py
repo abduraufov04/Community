@@ -49,7 +49,7 @@ def user_logout(request):
     return redirect('login')
 
 
-@login_required
+
 def dashboard(request):
     return render(request, 'dashboard.html')
 

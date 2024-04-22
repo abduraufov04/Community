@@ -38,3 +38,7 @@ class CustomUser(AbstractUser):
     
     def get_all_my_blogs(self):
         return Blog.objects.filter(author = self)
+    
+    def get_all_blogs_20(self):
+        count = 20 - len(self.get_all_my_blogs())
+        return Blog.objects.exclude(author = self)[:count]

@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from blog.forms import BlogForm
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from .models import Blog, Comment
 
 class BlogListView(ListView):
@@ -17,8 +18,9 @@ class BlogListView(ListView):
         if query:
             queryset = queryset.filter(type=query)  
         return queryset
-    
-class BlogCreateView(CreateView):
+
+
+class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Blog
     template_name = 'blog_form.html'
     form_class = BlogForm
@@ -38,7 +40,7 @@ class BlogDetailDetailView(DetailView):
     context_object_name='blog'
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(UpdateView, LoginRequiredMixin):
     model = Blog
     form_class= BlogForm
     template_name = "blog_form.html"
@@ -48,12 +50,13 @@ class BlogUpdateView(UpdateView):
         return reverse_lazy('detail_blog', kwargs={'pk': self.object.pk})
     
     
-class BlogDeleteView(DeleteView):
+class BlogDeleteView(DeleteView, LoginRequiredMixin):
     model = Blog
     template_name='delete_confirm.html'
     success_url = reverse_lazy('blog')
 
 
+@login_required
 def create_comment(request, pk):
     if not request.user.is_authenticated:
         return redirect('login')
